@@ -1,5 +1,6 @@
 package com.atmt.prpvideviewmodelfactorytest.ui
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import com.atmt.prpvideviewmodelfactorytest.R
@@ -7,6 +8,7 @@ import com.atmt.prpvideviewmodelfactorytest.baseui.BaseFragment
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.atmt.prpvideviewmodelfactorytest.AppViewModelsFactory
 import com.atmt.prpvideviewmodelfactorytest.ui.viewmodel.BlankViewModel
 import javax.inject.Inject
@@ -35,6 +37,13 @@ class BlankFragment : BaseFragment() {
     override fun initViewModel() {
         viewModel = ViewModelProviders.of(this, vmFactory).get(BlankViewModel::class.java)
 
+        viewModel.stringToShowLiveData.observe(this, Observer{
+            it?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            } ?: Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.getStringToShow()
     }
 
     override fun onAttach(context: Context) {
